@@ -1,4 +1,6 @@
+import java.io.BufferedReader
 import java.io.File
+import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.random.Random
@@ -32,7 +34,6 @@ var endTime: String = "2019-08-08 20:00:00"
 
 
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-@Synchronized
 fun main() {
     val dir = File(filesPath)
     val files = dir.listFiles().toMutableList().also {
@@ -43,8 +44,8 @@ fun main() {
     while (files.size > 1) {
         val userAndBranch = userAndBranches.random()
         ExecTest.printMessage(" git config --global user.name ${userAndBranch.gitName}")
-        ExecTest.printMessage(" cmd /c date ${list[index].date}")
-        ExecTest.printMessage(" cmd /c time ${list[index].time}")
+//        ExecTest.printMessage(" cmd /c date ${list[index].date}")
+//        ExecTest.printMessage(" cmd /c time ${list[index].time}")
         /*没法通过git命令获取到一个分支是否存在*/
         if (!userAndBranch.exist) {
             ExecTest.printMessage(" git checkout -b ${userAndBranch.branchName}")
@@ -94,18 +95,20 @@ class ExecTest {
     companion object {
         fun printMessage(input: String) {
             val process = Runtime.getRuntime().exec(input)
-//            val outputStream = process.inputStream
-//            val inputStreamReader = InputStreamReader(outputStream, "gbk")
-//            val bufferedReader = BufferedReader(inputStreamReader)
-//            var line: String?
-//            var flag = false
-//            do {
-//                line = bufferedReader.readLine()
-//                if (flag) {
-//                    println(line)
-//                }
-//                flag = true
-//            } while (line != null)
+
+            val outputStream = process.inputStream
+            val inputStreamReader = InputStreamReader(outputStream, "gbk")
+            val bufferedReader = BufferedReader(inputStreamReader)
+            var line: String?
+            var flag = false
+            do {
+                line = bufferedReader.readLine()
+                if (flag) {
+                    println(line)
+                }
+                flag = true
+            } while (line != null)
+
             process.waitFor()
             println("$input 执行结果为exitValue = ${process.exitValue()}")
         }
