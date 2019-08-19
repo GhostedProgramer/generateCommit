@@ -21,7 +21,7 @@ var mergeBranch = "master"
 //要clone到的本地路径
 var localPath = "E:\\PersonDocument\\IdeaProjects\\MyGitHub\\generateCommit"
 //git 头名称
-var commandPrefix = listOf("Add", "Remove", "Delete", "Upgrade", "Fix", "Modify", "Merge", "Optimize", "Refactor")
+var commandPrefix = listOf("add", "remove", "delete", "upgrade", "fix", "modify", "merge", "optimize", "refactor")
 //要提交的文件所在文件夹的路径
 var filesPath = "E:\\PersonDocument\\IdeaProjects\\MyGitHub\\generateCommit\\somfiles"
 //要提交文件加相对当前文件夹的路径
@@ -53,7 +53,6 @@ fun main() {
         val randomFile = files[Random.nextInt(files.size - 1)]
 
         ExecTest.printMessage(" git commit ${randomFile.absolutePath} -m '${commandPrefix.random()}${randomFile.nameWithoutExtension}'")
-//        ExecTest.printMessage(" git commit " + filesPrefix + "/" + randomFile.name + " - m '${commandPrefix.random()} ${randomFile.nameWithoutExtension}'")
         files.remove(randomFile)
         ExecTest.printMessage(" git checkout $mergeBranch")
         ExecTest.printMessage(" git stash")
