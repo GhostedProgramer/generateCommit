@@ -1,28 +1,29 @@
 import java.io.BufferedReader
 import java.io.File
+import java.io.File.*
 import java.io.InputStreamReader
 import kotlin.random.Random
 
 //用户及对应分支对象
 var userAndBranches = listOf(
-    UserAndBranch("GhostedProgramer", "P@ssw0rd05060335", "cjh1"),
-    UserAndBranch("yyz2ha", "P@ssw0rd05060335", "yyz")
+    UserAndBranch("GhostedProgramer", "cjh1", true),
+    UserAndBranch("yyz2ha", "yyz", true)
 )
 
 class UserAndBranch(
-    var username: String,
-    var password: String,
-    var branchName: String
+    var gitName: String,
+    var branchName: String,
+    var exist: Boolean
 )
 
 //要合并到的分支名
 var mergeBranch = "master"
 //要clone到的本地路径
-var localPath = "E:\\Person document\\IdeaProjects\\MyGitHub\\nativeTest"
+var localPath = "E:\\PersonDocument\\IdeaProjects\\MyGitHub\\generateCommit"
 //git 头名称
 var commandPrefix = listOf("Add", "Remove", "Delete", "Upgrade", "Fix", "Modify", "Merge", "Optimize", "Refactor")
 //要提交的文件所在文件夹的路径
-var filesPath = "E:\\Person document\\IdeaProjects\\MyGitHub\\nativeTest\\somfiles"
+var filesPath = "E:\\PersonDocument\\IdeaProjects\\MyGitHub\\generateCommit\\somfiles"
 //要提交文件加相对当前文件夹的路径
 var filesPrefix = "somefiles\\"
 //起始时间yyyy-mm-dd HH:mm:ss
@@ -39,14 +40,26 @@ fun main() {
     }
     while (files.size > 1) {
         val userAndBranch = userAndBranches.random()
-        ExecTest.printMessage(" git config --global user.name ${userAndBranch.username}")
+        ExecTest.printMessage(" git config --global user.name ${userAndBranch.gitName}")
 //        ExecTest.printMessage(" cmd /c date 2008-08-08")
-        ExecTest.printMessage(" git checkout ${userAndBranch.branchName}")
+
+        /*没法通过git命令获取到一个分支是否存在*/
+        if (!userAndBranch.exist) {
+            ExecTest.printMessage(" git checkout -b ${userAndBranch.branchName}")
+            userAndBranch.exist = true
+        } else {
+            ExecTest.printMessage(" git checkout ${userAndBranch.branchName}")
+        }
         val randomFile = files[Random.nextInt(files.size - 1)]
-        ExecTest.printMessage(" git commit $filesPrefix\\${randomFile.name} -m ''${commandPrefix.random()} ${randomFile.nameWithoutExtension}'")
+
+        ExecTest.printMessage(" git commit ${randomFile.absolutePath} -m '${commandPrefix.random()}${randomFile.nameWithoutExtension}'")
+//        ExecTest.printMessage(" git commit " + filesPrefix + "/" + randomFile.name + " - m '${commandPrefix.random()} ${randomFile.nameWithoutExtension}'")
         files.remove(randomFile)
         ExecTest.printMessage(" git checkout $mergeBranch")
+        ExecTest.printMessage(" git stash")
         ExecTest.printMessage(" git merge ${userAndBranch.branchName}")
+        ExecTest.printMessage(" git stash apply")
+        ExecTest.printMessage(" git stash clear")
     }
 }
 
