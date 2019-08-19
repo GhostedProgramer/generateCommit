@@ -33,6 +33,7 @@ var endTime: String = "2019-08-08 20:00:00"
 
 
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+@Synchronized
 fun main() {
     val dir = File(filesPath)
     val files = dir.listFiles().toMutableList().also {
