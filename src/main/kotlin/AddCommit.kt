@@ -23,7 +23,7 @@ var localPath = "E:\\PersonDocument\\IdeaProjects\\MyGitHub\\generateCommit"
 //git 头名称
 var commandPrefix = listOf("add", "remove", "delete", "upgrade", "fix", "modify", "merge", "optimize", "refactor")
 //要提交的文件所在文件夹的路径
-var filesPath = "E:\\PersonDocument\\IdeaProjects\\MyGitHub\\generateCommit\\somfiles"
+var filesPath = "E:\\PersonDocument\\IdeaProjects\\MyGitHub\\generateCommit\\somefiles"
 //要提交文件加相对当前文件夹的路径
 var filesPrefix = "somefiles\\"
 //起始时间yyyy-mm-dd HH:mm:ss
