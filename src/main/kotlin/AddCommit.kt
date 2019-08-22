@@ -1,14 +1,12 @@
-import java.io.BufferedReader
 import java.io.File
-import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.random.Random
 
 //用户及对应分支对象
 var userAndBranches = listOf(
-    UserAndBranch("cjh", "cjh1", true),
-    UserAndBranch("ywb", "yyz", true)
+    UserAndBranch("cjh", "cjh1", false),
+    UserAndBranch("ywb", "yyz", false)
 )
 
 class UserAndBranch(
@@ -28,7 +26,7 @@ var filesPath = "E:\\PersonDocument\\IdeaProjects\\MyGitHub\\generateCommit\\som
 //要提交文件加相对当前文件夹的路径
 var filesPrefix = "somefiles\\"
 //起始时间yyyy-mm-dd HH:mm:ss
-var startTime: String = "2019-07-02 20:00:00"
+var startTime: String = "2019-01-02 20:00:00"
 //终止时间yyyy-mm-dd HH:mm:ss
 var endTime: String = "2019-08-08 20:00:00"
 
@@ -43,9 +41,10 @@ fun main() {
     var index = 0
     while (files.size > 1) {
         val userAndBranch = userAndBranches.random()
+        val a = " cmd /c date ${list[index].date}"
         ExecTest.printMessage(" git config --global user.name ${userAndBranch.gitName}")
-//        ExecTest.printMessage(" cmd /c date ${list[index].date}")
-//        ExecTest.printMessage(" cmd /c time ${list[index].time}")
+        ExecTest.printMessage(" cmd /c date ${list[index].date}")
+        ExecTest.printMessage(" cmd /c time ${list[index].time}")
         /*没法通过git命令获取到一个分支是否存在*/
         if (!userAndBranch.exist) {
             ExecTest.printMessage(" git checkout -b ${userAndBranch.branchName}")
@@ -96,18 +95,18 @@ class ExecTest {
         fun printMessage(input: String) {
             val process = Runtime.getRuntime().exec(input)
 
-            val outputStream = process.inputStream
-            val inputStreamReader = InputStreamReader(outputStream, "gbk")
-            val bufferedReader = BufferedReader(inputStreamReader)
-            var line: String?
-            var flag = false
-            do {
-                line = bufferedReader.readLine()
-                if (flag) {
-                    println(line)
-                }
-                flag = true
-            } while (line != null)
+//            val outputStream = process.inputStream
+//            val inputStreamReader = InputStreamReader(outputStream, "gbk")
+//            val bufferedReader = BufferedReader(inputStreamReader)
+//            var line: String?
+//            var flag = false
+//            do {
+//                line = bufferedReader.readLine()
+//                if (flag) {
+//                    println(line)
+//                }
+//                flag = true
+//            } while (line != null)
 
             process.waitFor()
             println("$input 执行结果为exitValue = ${process.exitValue()}")
@@ -116,6 +115,6 @@ class ExecTest {
 }
 
 data class TimeAndDate(
-    var time: String,
-    var date: String
+    var date: String,
+    var time: String
 )
